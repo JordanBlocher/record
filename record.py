@@ -213,13 +213,20 @@ if __name__ == "__main__":
     print "stopped."
     print "converting to png images"
     v.convert()
-    print "To encode using mencoder:"
+    print "To encode quicktime formate using mencoder:"
     print "-"*80
-    print "mencoder mf://%s/*.png -mf fps=%d -audiofile %s -oac lavc " \
-            "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=800 -o v.avi" % \
+    print "mencoder mf://%s/*.png -mf fps=%d -audiofile %s -oac mp3lame " \
+            "-ovc x264 -o v.mov" % \
             (tmp_dir, v.fps, audio_file)
     print "-"*80
-    print
+    print "mencoder mf://%s/*.png -mf fps=%d -audiofile %s -oac mp3lame " \
+            "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=800 -o v.mov" % \
+            (tmp_dir, v.fps, audio_file)
+    print "-"*80
+    print "mencoder mf://%s/*.png -mf fps=%d -audiofile %s -oac mp3lame " \
+            "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=800 -o v.mov" % \
+            (tmp_dir, v.fps, audio_file)
+    print "-"*80
     print "To encode using theora:"
     print "-"*80
     print "ffmpeg2theora -F %d -v 10 %s/screen%%04d.png -o tmp.ogv" % \
