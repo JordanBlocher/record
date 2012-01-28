@@ -220,11 +220,11 @@ if __name__ == "__main__":
             (tmp_dir, v.fps, audio_file)
     print "-"*80
     print "mencoder mf://%s/*.png -mf fps=%d -audiofile %s -oac mp3lame " \
-            "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=800 -o v.mov" % \
+            "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=800:vpass=1 -o /dev/null" % \
             (tmp_dir, v.fps, audio_file)
     print "-"*80
     print "mencoder mf://%s/*.png -mf fps=%d -audiofile %s -oac mp3lame " \
-            "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=800 -o v.mov" % \
+            "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=800:vpass=2 -o v.mov" % \
             (tmp_dir, v.fps, audio_file)
     print "-"*80
     print "To encode using theora:"
