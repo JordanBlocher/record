@@ -3,7 +3,8 @@
 from time import sleep
 from threading import Thread
 
-from audio import capture, capture_stop
+#from audio import capture, capture_stop
+import audio
 
 class Audio(Thread):
 
@@ -12,10 +13,10 @@ class Audio(Thread):
         self._filename = filename
 
     def run(self):
-        capture(self._filename)
+        audio.capture(self._filename)
 
     def stop(self):
-        capture_stop()
+        audio.capture_stop()
 
 a = Audio("c.wav")
 a.start()
