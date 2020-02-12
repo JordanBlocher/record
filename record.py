@@ -24,7 +24,7 @@ from timeit import default_timer as clock
 from subprocess import Popen, PIPE, check_call, STDOUT
 from tempfile import mkdtemp
 from select import select
-from cPickle import dump, load
+from pickle import dump, load
 from optparse import OptionParser
 from threading import Thread
 
@@ -100,9 +100,9 @@ class Video(object):
             dump(frame_header, self._datafile)
             self._datafile.write(img)
             i += 1
-            print "time: %.3f, frame: %04d, current fps: %6.3f, skip: %d, " \
+            print("time: %.3f, frame: %04d, current fps: %6.3f, skip: %d, " \
                     "lag: %.6f" % ( t_new-t_start, i, 1/(t_new-t), skip,
-                            t_new-t_start - float(i)/self.fps)
+                            t_new-t_start - float(i)/self.fps))
             t = t_new
 
     def get_window_pos(self, win_id, dX=0, dY=-17, dw=2, dh=16):
@@ -156,7 +156,7 @@ class Video(object):
         f = open(self.tmpdir+"/data")
         data = load(f)
         img_width, img_height, stride, fps = data
-        print img_width, img_height, stride, fps
+        print(img_width, img_height, stride, fps)
         i = 0
         while 1:
             try:
@@ -172,9 +172,9 @@ class Video(object):
             img = Image.frombuffer("RGB", (img_width, img_height),
                     pixels, "raw", "RGB", stride, 1)
             img.save(self.tmpdir + "/screen%04d.png" % i)
-            print i
+            print(i)
             i += 1
-        print "images saved to: %s" % self.tmpdir
+        print("images saved to: %s" % self.tmpdir)
 
 
 def encode(audio, video, output):
@@ -195,13 +195,13 @@ if __name__ == "__main__":
     tmp_dir = mkdtemp()
     video_file = os.path.join(tmp_dir, "video.ogv")
     audio_file = os.path.join(tmp_dir, "audio.wav")
-    print "work dir:", tmp_dir
-    print "select a window to capture (2s sleep)"
+    print("work dir:", tmp_dir)
+    print("select a window to capture (2s sleep)")
     sleep(2)
-    print "active window selected"
+    print("active window selected")
     v = Video(tmp_dir, options.window)
     a = Audio(audio_file)
-    print "Capturing audio and video. Press CTRL-C to stop."
+    print("Capturing audio and video. Press CTRL-C to stop.")
     try:
         try:
             a.start()
@@ -210,28 +210,26 @@ if __name__ == "__main__":
             pass
     finally:
         a.stop()
-    print "stopped."
-    print "converting to png images"
+    print("stopped.")
+    print("converting to png images")
     v.convert()
-    print "To encode using mencoder:"
-    print "-"*80
-    print "mencoder mf://%s/*.png -mf fps=%d -audiofile %s -oac lavc " \
+    print("To encode using mencoder:")
+    print("-"*80)
+    print("mencoder mf://%s/*.png -mf fps=%d -audiofile %s -oac lavc " \
             "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=800 -o v.avi" % \
-            (tmp_dir, v.fps, audio_file)
-    print "-"*80
-    print
-    print "To encode using theora:"
-    print "-"*80
-    print "ffmpeg2theora -F %d -v 10 %s/screen%%04d.png -o tmp.ogv" % \
-            (v.fps, tmp_dir)
-    print "normalize-audio %s  # beware: normalizes *in place*" % audio_file
-    print "oggenc %s" % audio_file
-    print "oggz-merge -o v.ogv tmp.ogv %sogg" % audio_file[:-3]
-    print "-"*80
-    print
-    print "To just archive audio and video in a lossless format for later processing:"
-    print "-"*80
-    print "advmng -v -a %d video.mng %s/screen*.png" % (v.fps, tmp_dir)
-    print "flac -o audio.flac %s" % audio_file
-    print "-"*80
-    print "(Use 'advmng -x video.mng' to extract the png images)"
+            (tmp_dir, v.fps, audio_file))
+    print("-"*80)
+    print("To encode using theora:")
+    print("-"*80)
+    print("ffmpeg2theora -F %d -v 10 %s/screen%%04d.png -o tmp.ogv" % \
+            (v.fps, tmp_dir))
+    print("normalize-audio %s  # beware: normalizes *in place*" % audio_file)
+    print("oggenc %s" % audio_file)
+    print("oggz-merge -o v.ogv tmp.ogv %sogg" % audio_file[:-3])
+    print("-"*80)
+    print("To just archive audio and video in a lossless format for later processing:")
+    print("-"*80)
+    print("advmng -v -a %d video.mng %s/screen*.png" % (v.fps, tmp_dir))
+    print("flac -o audio.flac %s" % audio_file)
+    print("-"*80)
+    print("(Use 'advmng -x video.mng' to extract the png images)")
